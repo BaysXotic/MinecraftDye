@@ -4,12 +4,14 @@ namespace Terpz710\ShulkerDye;
 
 use pocketmine\event\Listener;
 use pocketmine\event\player\PlayerInteractEvent;
-use pocketmine\item\Dye;
+use pocketmine\item\Item;
 use pocketmine\nbt\tag\ByteTag;
 use pocketmine\nbt\tag\CompoundTag;
 use pocketmine\tile\ShulkerBox;
 use pocketmine\block\Block;
 use pocketmine\player\Player;
+use pocketmine\item\LegacyStringToItemParser;
+use pocketmine\item\StringToItemParser;
 
 class EventListener implements Listener {
 
@@ -18,9 +20,15 @@ class EventListener implements Listener {
         $block = $event->getBlock();
         $item = $player->getInventory()->getItemInHand();
 
-        if ($item->getId() === Item::DYE) {
-            $dyeColor = $item->getDamage();
-            $tile = $block->getWorld()->getTile($block);
+        $itemParser = class_exists(StringToItemParser::class)
+            ? new StringToItemParser()
+            : new LegacyStringToItemParser();
+
+        $parsedItem = $itemParser->parse($item->getName());
+
+        if ($parsedItem->getId() === Item::DYE) {
+            $dyeColor = $parsedItem->getDamage();
+            $tile = $block->getLevel()->getTile($block);
 
             if ($tile instanceof ShulkerBox) {
                 $nbt = $tile->getNamedTag() ?? new CompoundTag("");
