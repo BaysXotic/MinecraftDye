@@ -9,6 +9,7 @@ use pocketmine\event\player\PlayerInteractEvent;
 use pocketmine\item\Dye;
 use pocketmine\block\tile\ShulkerBox;
 use pocketmine\player\Player;
+use pocketmine\nbt\tag\CompoundTag;
 
 class EventListener implements Listener {
 
@@ -22,9 +23,17 @@ class EventListener implements Listener {
             $tile = $block->getWorld()->getTile($block);
 
             if ($tile instanceof ShulkerBox) {
-                $tile->setColor($dyeColor);
+                $this->changeColor($tile, $dyeColor);
                 $player->sendMessage("Shulker Box color changed!");
             }
         }
+    }
+
+    public function changeColor(ShulkerBox $shulkerBox, int $color) {
+
+        $shulkerBox->setColor($color);
+        $nbt = $shulkerBox->getNamedTag() ?? new CompoundTag();
+        $nbt->setByte("Color", $color);
+        $shulkerBox->setNamedTag($nbt);
     }
 }
