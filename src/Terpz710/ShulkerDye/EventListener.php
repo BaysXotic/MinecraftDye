@@ -24,9 +24,9 @@ class EventListener extends PluginBase implements Listener {
             $tile = $block->getWorld()->getTile($block);
 
             if ($tile instanceof ShulkerBox) {
-                $nbt = $tile->getNamedTag() ?? new CompoundTag("");
+                $nbt = $tile->setSpawnCompound() ?? new CompoundTag("");
                 $nbt->setTag(new ByteTag("Color", $dyeColor));
-                $tile->setNamedTag($nbt);
+                $tile->setSpawnCompound($nbt);
                 $tile->saveNBT();
                 $player->sendMessage("Shulker Box color changed!");
             }
