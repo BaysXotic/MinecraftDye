@@ -1,0 +1,8 @@
+--- # Poggit-CI Manifest. Open the CI at https://poggit.pmmp.io/ci/BaysXotic/MinecraftDye
+build-by-default: true
+branches:
+- main
+projects:
+  MinecraftDye:
+    path: ""
+...
