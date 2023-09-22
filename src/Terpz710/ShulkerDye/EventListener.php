@@ -9,7 +9,7 @@ use pocketmine\event\player\PlayerInteractEvent;
 use pocketmine\item\Dye;
 use pocketmine\nbt\tag\ByteTag;
 use pocketmine\nbt\tag\CompoundTag;
-use pocketmine\tile\ShulkerBox;
+use pocketmine\block\tile\ShulkerBox;
 use pocketmine\block\Block;
 use pocketmine\player\Player;
 
