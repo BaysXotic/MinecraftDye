@@ -1,0 +1,6 @@
+name: ShulkerDye
+version: 1.0.0
+author: Terpz710
+main: Terpz710\ShulkerDye\Main
+api: 5.0.0
+description: Adds the ability to dye shulker boxes.
