@@ -20,7 +20,7 @@ class EventListener implements Listener {
 
         if ($item->getId() === Item::DYE) {
             $dyeColor = $item->getDamage();
-            $tile = $block->getLevel()->getTile($block);
+            $tile = $block->getWorld()->getTile($block);
 
             if ($tile instanceof ShulkerBox) {
                 $nbt = $tile->getNamedTag() ?? new CompoundTag("");
