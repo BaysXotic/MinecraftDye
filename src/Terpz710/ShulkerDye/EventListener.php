@@ -18,7 +18,7 @@ class EventListener implements Listener {
         $block = $event->getBlock();
         $item = $player->getInventory()->getItemInHand();
 
-        if ($item->getId() === Item::DYE) {
+        if ($item instanceof Dye) {
             $dyeColor = $item->getDamage();
             $tile = $block->getLevel()->getTile($block);
 
