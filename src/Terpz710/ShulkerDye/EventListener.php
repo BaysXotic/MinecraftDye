@@ -1,17 +1,23 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Terpz710\ShulkerDye;
 
+use pocketmine\block\tile\ShulkerBox;
 use pocketmine\event\Listener;
 use pocketmine\event\player\PlayerInteractEvent;
 use pocketmine\item\Dye;
 use pocketmine\nbt\tag\ByteTag;
 use pocketmine\nbt\tag\CompoundTag;
-use pocketmine\tile\ShulkerBox;
-use pocketmine\block\Block;
-use pocketmine\player\Player;
+use pocketmine\plugin\PluginBase;
 
-class EventListener implements Listener {
+class EventListener extends PluginBase implements Listener {
+
+    public function onEnable() {
+        $this->getServer()->getPluginManager()->registerEvents($this, $this);
+        $this->getLogger()->info("YourPluginName has been enabled!");
+    }
 
     public function onPlayerInteract(PlayerInteractEvent $event) {
         $player = $event->getPlayer();
