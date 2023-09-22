@@ -14,11 +14,6 @@ use pocketmine\plugin\PluginBase;
 
 class EventListener extends PluginBase implements Listener {
 
-    public function onEnable() {
-        $this->getServer()->getPluginManager()->registerEvents($this, $this);
-        $this->getLogger()->info("YourPluginName has been enabled!");
-    }
-
     public function onPlayerInteract(PlayerInteractEvent $event) {
         $player = $event->getPlayer();
         $block = $event->getBlock();
