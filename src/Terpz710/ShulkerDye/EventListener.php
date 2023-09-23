@@ -7,8 +7,8 @@ namespace Terpz710\ShulkerDye;
 use pocketmine\event\Listener;
 use pocketmine\event\player\PlayerItemHeldEvent;
 use pocketmine\item\Dye;
-use pocketmine\item\ItemFactory;
 use pocketmine\player\Player;
+use pocketmine\block\BlockIdentifier;
 
 class EventListener implements Listener {
 
@@ -24,12 +24,10 @@ class EventListener implements Listener {
             $dyeItem = $this->dyeDragData[$player->getName()];
             $dyeColor = $dyeItem->getColor();
 
-            $shulkerBoxItem = ItemFactory::get(ItemIds::SHULKER_BOX);
-            $shulkerBoxItem->setCustomName($dyeColor->getName());
-            $shulkerBoxItem->getNamedTag()->setTag("ShulkerColor", new IntTag("ShulkerColor", $dyeColor->getId()));
+            $shulkerBoxIdentifier = new BlockIdentifier(BlockIdentifier::SHULKER_BOX, $dyeColor->getName());
 
             $player->getInventory()->removeItem($dyeItem);
-            $player->getInventory()->addItem($shulkerBoxItem);
+            $player->getInventory()->addItem($shulkerBoxIdentifier->getBlockItem());
             $player->sendMessage("Shulker Box color changed!");
 
             unset($this->dyeDragData[$player->getName()]);
