@@ -5,26 +5,34 @@ declare(strict_types=1);
 namespace Terpz710\ShulkerDye;
 
 use pocketmine\event\Listener;
-use pocketmine\event\player\PlayerInteractEvent;
+use pocketmine\event\player\PlayerItemHeldEvent;
 use pocketmine\item\Dye;
-use pocketmine\block\tile\ShulkerBox;
+use pocketmine\item\Item;
+use pocketmine\item\ShulkerBox as ShulkerBoxItem;
+use pocketmine\nbt\tag\CompoundTag;
 use pocketmine\player\Player;
 
 class EventListener implements Listener {
 
-    public function onPlayerInteract(PlayerInteractEvent $event) {
+    private $dyeDragData = [];
+
+    public function onPlayerItemHeld(PlayerItemHeldEvent $event) {
         $player = $event->getPlayer();
-        $block = $event->getBlock();
         $item = $player->getInventory()->getItemInHand();
 
         if ($item instanceof Dye) {
-            $dyeColor = $item->getColor();
-            $tile = $block->getWorld()->getTile($block);
+            
+            $this->dyeDragData[$player->getName()] = $item->getColor();
+        } elseif (isset($this->dyeDragData[$player->getName()])) {
+            
+            $dyeColor = $this->dyeDragData[$player->getName()];
+            $shulkerBoxItem = new ShulkerBoxItem($dyeColor);
 
-            if ($tile instanceof ShulkerBox) {
-                $tile->setColor($dyeColor);
-                $player->sendMessage("Shulker Box color changed!");
-            }
-        }
+            $player->getInventory()->removeItem(Item::get(Item::DYE, $dyeColor, 1));
+            
+            $player->getInventory()->setItemInHand($shulkerBoxItem);
+            $player->sendMessage("Shulker Box color changed!");
+
+            unset($this->dyeDragData[$player->getName()]);
     }
 }
