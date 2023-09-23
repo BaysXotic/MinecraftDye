@@ -32,4 +32,3 @@ class EventListener implements Listener {
             unset($this->dyeDragData[$player->getName()]);
         }
     }
-}
