@@ -6,9 +6,9 @@ namespace Terpz710\ShulkerDye;
 
 use pocketmine\event\Listener;
 use pocketmine\event\player\PlayerItemHeldEvent;
+use pocketmine\item\CustomShulkerBox;
 use pocketmine\item\Dye;
-use pocketmine\item\Item;
-use pocketmine\item\ShulkerBox;
+use pocketmine\item\Wool;
 use pocketmine\player\Player;
 
 class EventListener implements Listener {
@@ -25,9 +25,9 @@ class EventListener implements Listener {
             $dyeItem = $this->dyeDragData[$player->getName()];
             $dyeColor = $dyeItem->getColor();
 
-            $shulkerBoxItem = new ShulkerBox($dyeColor);
+            $shulkerBoxItem = new CustomShulkerBox($dyeColor);
 
-            $shulkerBoxItem->setColor($dyeColor);
+            $shulkerBoxItem->applyColorToShulkerBox($player->getLevel()->getTile($player->floor()->subtract(0, 1)));
 
             $player->getInventory()->remove($dyeItem);
             $player->getInventory()->setItemInHand($shulkerBoxItem);
