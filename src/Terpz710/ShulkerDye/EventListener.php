@@ -34,5 +34,6 @@ class EventListener implements Listener {
             $player->sendMessage("Shulker Box color changed!");
 
             unset($this->dyeDragData[$player->getName()]);
+        }
     }
 }
