@@ -7,6 +7,7 @@ namespace Terpz710\ShulkerDye;
 use pocketmine\event\Listener;
 use pocketmine\event\player\PlayerItemHeldEvent;
 use pocketmine\item\Dye;
+use pocketmine\tile\ShulkerBox
 use pocketmine\player\Player;
 
 class EventListener implements Listener {
