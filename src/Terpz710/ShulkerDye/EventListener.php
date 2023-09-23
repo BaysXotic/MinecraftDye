@@ -8,7 +8,6 @@ use pocketmine\event\Listener;
 use pocketmine\event\player\PlayerItemHeldEvent;
 use pocketmine\item\Dye;
 use pocketmine\player\Player;
-use pocketmine\block\BlockIdentifier;
 
 class EventListener implements Listener {
 
@@ -24,10 +23,10 @@ class EventListener implements Listener {
             $dyeItem = $this->dyeDragData[$player->getName()];
             $dyeColor = $dyeItem->getColor();
 
-            $shulkerBoxIdentifier = new BlockIdentifier(BlockIdentifier::SHULKER_BOX, $dyeColor->getName());
+            $shulkerBox = new ShulkerBox($dyeColor);
 
             $player->getInventory()->removeItem($dyeItem);
-            $player->getInventory()->addItem($shulkerBoxIdentifier->getBlockItem());
+            $player->getInventory()->addItem($shulkerBox->getBlockItem());
             $player->sendMessage("Shulker Box color changed!");
 
             unset($this->dyeDragData[$player->getName()]);
