@@ -20,13 +20,12 @@ class EventListener implements Listener {
         $item = $player->getInventory()->getItemInHand();
 
         if ($item instanceof Dye) {
-            $this->dyeDragData[$player->getName()] = $item->getColor();
+            $this->dyeDragData[$player->getName()] = $item;
         } elseif (isset($this->dyeDragData[$player->getName()])) {
-            $dyeColor = $this->dyeDragData[$player->getName()];
-            $dyeItem = new Dye($dyeColor);
+            $dyeItem = $this->dyeDragData[$player->getName()];
+            $dyeColor = $this->getDyeColor($dyeItem);
             $shulkerBoxItem = $this->createColoredShulkerBoxItem($dyeColor);
-            $this->transferCustomData($item, $shulkerBoxItem);
-            $player->getInventory()->remove($dyeItem);
+            $player->getInventory()->remove($dyeItem); 
             $player->getInventory()->setItemInHand($shulkerBoxItem);
             $player->sendMessage("Shulker Box color changed!");
 
@@ -34,9 +33,16 @@ class EventListener implements Listener {
         }
     }
 
-    private function createColoredShulkerBoxItem(int $dyeColor): Dye {
+    private function getDyeColor(Dye $dyeItem): int {
+        $nbt = $dyeItem->getNamedTag();
+        if ($nbt !== null && $nbt->hasTag(Dye::TAG_COLOR, StringTag::class)) {
+            return $nbt->getString(Dye::TAG_COLOR);
+        }
+        return Dye::COLOR_WHITE;
+    }
 
-        $shulkerBoxItem = Dye::get(Item::SHULKER_BOX);
+    private function createColoredShulkerBoxItem(int $dyeColor): Dye {
+        $shulkerBoxItem = new Dye($dyeColor);
         $nbt = new CompoundTag("", [
             new StringTag(Dye::TAG_COLOR, $dyeColor)
         ]);
