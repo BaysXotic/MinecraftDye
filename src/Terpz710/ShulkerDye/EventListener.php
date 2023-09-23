@@ -6,6 +6,7 @@ namespace Terpz710\ShulkerDye;
 
 use pocketmine\event\Listener;
 use pocketmine\event\player\PlayerItemHeldEvent;
+use pocketmine\item\ShulkerBox;
 use pocketmine\item\Dye;
 use pocketmine\item\VanillaItems;
 use pocketmine\player\Player;
