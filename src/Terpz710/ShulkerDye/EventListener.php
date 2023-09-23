@@ -4,12 +4,14 @@ declare(strict_types=1);
 
 namespace Terpz710\ShulkerDye;
 
+use pocketmine\block\Block;
 use pocketmine\block\BlockIdentifier;
+use pocketmine\block\ShulkerBox as ShulkerBoxBlock;
+use pocketmine\block\tile\ShulkerBox as ShulkerBoxTile;
 use pocketmine\event\Listener;
 use pocketmine\event\player\PlayerItemHeldEvent;
 use pocketmine\item\Dye;
 use pocketmine\player\Player;
-use pocketmine\block\ShulkerBox as ShulkerBoxBlock;
 
 class EventListener implements Listener {
 
@@ -25,11 +27,18 @@ class EventListener implements Listener {
             $dyeItem = $this->dyeDragData[$player->getName()];
             $dyeColor = $dyeItem->getColor();
 
-            $blockIdentifier = new BlockIdentifier(ShulkerBoxBlock::WHITE + $dyeColor->getId());
-            $player->getLevel()->setBlock($player->floor()->subtract(0, 1), $blockIdentifier);
+            $shulkerColor = $dyeColor->getId();
 
-            $player->getInventory()->remove($dyeItem);
-            $player->sendMessage("Shulker Box color changed!");
+            $blockBelow = $player->getLevel()->getBlock($player->floor()->subtract(0, 1));
+            if ($blockBelow instanceof ShulkerBoxBlock && !$blockBelow->getTile() instanceof ShulkerBoxTile) {
+                $blockIdentifier = new BlockIdentifier(ShulkerBoxBlock::ID . ":" . $shulkerColor);
+                $player->getLevel()->setBlock($blockBelow, $blockIdentifier);
+
+                $player->getInventory()->remove($dyeItem);
+                $player->sendMessage("Shulker Box color changed!");
+            } else {
+                $player->sendMessage("You can only dye undyed Shulker Boxes.");
+            }
 
             unset($this->dyeDragData[$player->getName()]);
         }
